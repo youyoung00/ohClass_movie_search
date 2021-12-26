@@ -82,7 +82,7 @@ class _MovieScreenState extends State<MovieScreen> {
         itemCount: _originMovies.length,
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 3,
-          mainAxisExtent: 260,
+          mainAxisExtent: 300,
         ),
         itemBuilder: (BuildContext context, int index) {
           return Padding(
