@@ -15,7 +15,7 @@ class MovieScreen extends StatefulWidget {
 class _MovieScreenState extends State<MovieScreen> {
   final _textEditingController = TextEditingController();
 
-  List<MovieInfo> _movies = [];
+  List<MovieInfo> _searchMovies = [];
   List<MovieInfo> _originMovies = [];
   final _api = MovieApi();
   Timer? _debounce;
@@ -35,8 +35,8 @@ class _MovieScreenState extends State<MovieScreen> {
   Future<void> _showResult() async {
     List<MovieInfo> movies = await _api.fetchPhotos();
     setState(() {
-      _movies = movies;
-      _originMovies = _movies;
+      _originMovies = movies;
+      _searchMovies = _originMovies;
     });
   }
 
@@ -45,9 +45,9 @@ class _MovieScreenState extends State<MovieScreen> {
       _debounce?.cancel();
     }
 
-    _debounce = Timer(const Duration(milliseconds: 500), () {
+    _debounce = Timer(const Duration(milliseconds: 1000), () {
       setState(() {
-        _originMovies = _movies
+        _searchMovies = _originMovies
             .where((movieInfo) => movieInfo.title.contains(query))
             .toList();
       });
@@ -87,7 +87,7 @@ class _MovieScreenState extends State<MovieScreen> {
   Widget _buildMovesInfo() {
     return Expanded(
       child: GridView.builder(
-        itemCount: _originMovies.length,
+        itemCount: _searchMovies.length,
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 3,
           mainAxisExtent: 300,
@@ -105,7 +105,7 @@ class _MovieScreenState extends State<MovieScreen> {
                         context,
                         MaterialPageRoute(
                           builder: (context) => MovieDetailScreen(
-                              movieInfo: _originMovies[index]),
+                              movieInfo: _searchMovies[index]),
                         ),
                       );
                     },
@@ -122,7 +122,7 @@ class _MovieScreenState extends State<MovieScreen> {
                         image: DecorationImage(
                           fit: BoxFit.cover,
                           image: NetworkImage(
-                            _originMovies[index].posterUrl,
+                            _searchMovies[index].posterUrl,
                           ),
                         ),
                       ),
@@ -136,7 +136,7 @@ class _MovieScreenState extends State<MovieScreen> {
                     child: Container(
                       alignment: Alignment.topLeft,
                       child: Text(
-                        _originMovies[index].title,
+                        _searchMovies[index].title,
                         style: const TextStyle(color: Colors.white),
                       ),
                     ),
