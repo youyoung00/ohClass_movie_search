@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:movie_search/data/movie_api_data.dart';
 import 'package:movie_search/model/movies_all_data.dart';
@@ -16,6 +18,7 @@ class _MovieScreenState extends State<MovieScreen> {
   List<MovieInfo> _movies = [];
   List<MovieInfo> _originMovies = [];
   final _api = MovieApi();
+  Timer? _debounce;
 
   @override
   void initState() {
@@ -34,6 +37,20 @@ class _MovieScreenState extends State<MovieScreen> {
     setState(() {
       _movies = movies;
       _originMovies = _movies;
+    });
+  }
+
+  void onQueryChanged(String query) {
+    if (_debounce?.isActive ?? false) {
+      _debounce?.cancel();
+    }
+
+    _debounce = Timer(const Duration(milliseconds: 500), () {
+      setState(() {
+        _originMovies = _movies
+            .where((movieInfo) => movieInfo.title.contains(query))
+            .toList();
+      });
     });
   }
 
@@ -56,16 +73,7 @@ class _MovieScreenState extends State<MovieScreen> {
 
   Widget _buildTextField() {
     return TextFormField(
-      onChanged: (input) {
-        // _originMovies.clear();
-        setState(() {
-          _originMovies = _movies
-              .where((movieInfo) => movieInfo.title.contains(input))
-              .toList();
-          print(_originMovies);
-        });
-        // print(_movies);
-      },
+      onChanged: onQueryChanged,
       controller: _textEditingController,
       decoration: InputDecoration(
         suffixIcon: IconButton(
