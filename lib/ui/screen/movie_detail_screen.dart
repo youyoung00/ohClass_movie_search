@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:movie_search/components/configs/custom_ele_btn_model.dart';
+import 'package:movie_search/components/widgets/custom_ele_btn_widget.dart';
+import 'package:movie_search/components/widgets/text_info_container_widget.dart';
 import 'package:movie_search/model/movies_all_data.dart';
 
 class MovieDetailScreen extends StatelessWidget {
@@ -44,32 +47,16 @@ class MovieDetailScreen extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(movieInfo.releaseDate.toString()),
-                        const SizedBox(height: 8),
                         Row(
-                          children: [
-                            ElevatedButton(
-                              onPressed: () {},
-                              child: Row(
-                                children: [
-                                  const Icon(Icons.check),
-                                  const SizedBox(width: 8),
-                                  Text(movieInfo.voteCount.toString()),
-                                ],
-                              ),
-                            ),
-                            const SizedBox(width: 8),
-                            ElevatedButton(
-                              onPressed: () {},
-                              child: Row(
-                                children: [
-                                  const Icon(Icons.star),
-                                  const SizedBox(width: 8),
-                                  Text(movieInfo.voteAverage.toString()),
-                                ],
-                              ),
-                            ),
-                          ],
-                        )
+                          children: eleBtnModels
+                              .map<Widget>((e) => CustomEleButton(
+                                    onClick: () {},
+                                    btnIcon: e.btnIcon,
+                                    btnString: movieInfo.voteAverage.toString(),
+                                    btnPadding: e.btnPadding,
+                                  ))
+                              .toList(),
+                        ),
                       ],
                     ),
                   )
@@ -79,12 +66,9 @@ class MovieDetailScreen extends StatelessWidget {
             const Divider(
               color: Colors.grey,
             ),
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Container(
-                alignment: Alignment.topLeft,
-                child: Text(movieInfo.overview),
-              ),
+            TextInfoContainer(
+              padding: const EdgeInsets.all(16),
+              infoTxt: movieInfo.overview,
             ),
           ],
         ),

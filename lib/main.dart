@@ -1,7 +1,11 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:movie_search/ui/movie_screen.dart';
+import 'package:movie_search/ui/screen/movie_screen.dart';
+import 'package:movie_search/ui/screen_model/screen_view_model.dart';
+import 'package:provider/provider.dart';
+
+import 'data/movie_api_data.dart';
 
 class MyHttpOverrides extends HttpOverrides {
   @override
@@ -22,6 +26,11 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(home: MovieScreen());
+    return MaterialApp(
+      home: ChangeNotifierProvider<ScreenViewModel>(
+        create: (_) => ScreenViewModel(MovieApi()),
+        child: const MovieScreen(),
+      ),
+    );
   }
 }

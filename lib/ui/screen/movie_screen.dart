@@ -1,9 +1,12 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:movie_search/components/widgets/text_info_container_widget.dart';
 import 'package:movie_search/data/movie_api_data.dart';
 import 'package:movie_search/model/movies_all_data.dart';
-import 'package:movie_search/ui/movie_detail_screen.dart';
+import 'package:movie_search/ui/screen/movie_detail_screen.dart';
+import 'package:movie_search/ui/screen_model/screen_view_model.dart';
+import 'package:provider/provider.dart';
 
 class MovieScreen extends StatefulWidget {
   const MovieScreen({Key? key}) : super(key: key);
@@ -15,15 +18,15 @@ class MovieScreen extends StatefulWidget {
 class _MovieScreenState extends State<MovieScreen> {
   final _textEditingController = TextEditingController();
 
-  List<MovieInfo> _searchMovies = [];
-  List<MovieInfo> _originMovies = [];
-  final _api = MovieApi();
-  Timer? _debounce;
+  // List<MovieInfo> _searchMovies = [];
+  // List<MovieInfo> _originMovies = [];
+  // final _api = MovieApi();
+  // Timer? _debounce;
 
   @override
   void initState() {
+    // final viewReadModel = context.read()<ScreenViewModel>();
     super.initState();
-    _showResult();
   }
 
   @override
@@ -32,30 +35,31 @@ class _MovieScreenState extends State<MovieScreen> {
     super.dispose();
   }
 
-  Future<void> _showResult() async {
-    List<MovieInfo> movies = await _api.fetchPhotos();
-    setState(() {
-      _originMovies = movies;
-      _searchMovies = _originMovies;
-    });
-  }
+  // Future<void> _showResult() async {
+  //   List<MovieInfo> movies = await _api.fetchPhotos();
+  //   setState(() {
+  //     _originMovies = movies;
+  //     _searchMovies = _originMovies;
+  //   });
+  // }
 
-  void onQueryChanged(String query) {
-    if (_debounce?.isActive ?? false) {
-      _debounce?.cancel();
-    }
-
-    _debounce = Timer(const Duration(milliseconds: 1000), () {
-      setState(() {
-        _searchMovies = _originMovies
-            .where((movieInfo) => movieInfo.title.contains(query))
-            .toList();
-      });
-    });
-  }
+  // void onQueryChanged(String query) {
+  //   if (_debounce?.isActive ?? false) {
+  //     _debounce?.cancel();
+  //   }
+  //
+  //   _debounce = Timer(const Duration(milliseconds: 1000), () {
+  //     setState(() {
+  //       _searchMovies = _originMovies
+  //           .where((movieInfo) => movieInfo.title.contains(query))
+  //           .toList();
+  //     });
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
+    final viewModel = context.watch<ScreenViewModel>();
     return Scaffold(
       backgroundColor: Colors.blueGrey,
       appBar: AppBar(
@@ -131,15 +135,9 @@ class _MovieScreenState extends State<MovieScreen> {
                 ),
                 Expanded(
                   flex: 3,
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Container(
-                      alignment: Alignment.topLeft,
-                      child: Text(
-                        _searchMovies[index].title,
-                        style: const TextStyle(color: Colors.white),
-                      ),
-                    ),
+                  child: TextInfoContainer(
+                    padding: const EdgeInsets.all(8),
+                    infoTxt: _searchMovies[index].title,
                   ),
                 ),
               ],
