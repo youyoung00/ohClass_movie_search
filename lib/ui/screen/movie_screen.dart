@@ -1,9 +1,5 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:movie_search/components/widgets/text_info_container_widget.dart';
-import 'package:movie_search/data/movie_api_data.dart';
-import 'package:movie_search/model/movies_all_data.dart';
 import 'package:movie_search/ui/screen/movie_detail_screen.dart';
 import 'package:movie_search/ui/screen_model/screen_view_model.dart';
 import 'package:provider/provider.dart';
@@ -18,15 +14,10 @@ class MovieScreen extends StatefulWidget {
 class _MovieScreenState extends State<MovieScreen> {
   final _textEditingController = TextEditingController();
 
-  // List<MovieInfo> _searchMovies = [];
-  // List<MovieInfo> _originMovies = [];
-  // final _api = MovieApi();
-  // Timer? _debounce;
-
   @override
   void initState() {
-    // final viewReadModel = context.read()<ScreenViewModel>();
     super.initState();
+    context.read<ScreenViewModel>().showResult();
   }
 
   @override
@@ -35,31 +26,8 @@ class _MovieScreenState extends State<MovieScreen> {
     super.dispose();
   }
 
-  // Future<void> _showResult() async {
-  //   List<MovieInfo> movies = await _api.fetchPhotos();
-  //   setState(() {
-  //     _originMovies = movies;
-  //     _searchMovies = _originMovies;
-  //   });
-  // }
-
-  // void onQueryChanged(String query) {
-  //   if (_debounce?.isActive ?? false) {
-  //     _debounce?.cancel();
-  //   }
-  //
-  //   _debounce = Timer(const Duration(milliseconds: 1000), () {
-  //     setState(() {
-  //       _searchMovies = _originMovies
-  //           .where((movieInfo) => movieInfo.title.contains(query))
-  //           .toList();
-  //     });
-  //   });
-  // }
-
   @override
   Widget build(BuildContext context) {
-    final viewModel = context.watch<ScreenViewModel>();
     return Scaffold(
       backgroundColor: Colors.blueGrey,
       appBar: AppBar(
@@ -76,8 +44,9 @@ class _MovieScreenState extends State<MovieScreen> {
   }
 
   Widget _buildTextField() {
+    final viewModel = context.watch<ScreenViewModel>();
     return TextFormField(
-      onChanged: onQueryChanged,
+      onChanged: viewModel.onQueryChanged,
       controller: _textEditingController,
       decoration: InputDecoration(
         suffixIcon: IconButton(
@@ -89,9 +58,10 @@ class _MovieScreenState extends State<MovieScreen> {
   }
 
   Widget _buildMovesInfo() {
+    final viewModel = context.watch<ScreenViewModel>();
     return Expanded(
       child: GridView.builder(
-        itemCount: _searchMovies.length,
+        itemCount: viewModel.searchMovies.length,
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 3,
           mainAxisExtent: 300,
@@ -109,7 +79,7 @@ class _MovieScreenState extends State<MovieScreen> {
                         context,
                         MaterialPageRoute(
                           builder: (context) => MovieDetailScreen(
-                              movieInfo: _searchMovies[index]),
+                              movieInfo: viewModel.searchMovies[index]),
                         ),
                       );
                     },
@@ -126,7 +96,7 @@ class _MovieScreenState extends State<MovieScreen> {
                         image: DecorationImage(
                           fit: BoxFit.cover,
                           image: NetworkImage(
-                            _searchMovies[index].posterUrl,
+                            viewModel.searchMovies[index].posterUrl,
                           ),
                         ),
                       ),
@@ -137,7 +107,7 @@ class _MovieScreenState extends State<MovieScreen> {
                   flex: 3,
                   child: TextInfoContainer(
                     padding: const EdgeInsets.all(8),
-                    infoTxt: _searchMovies[index].title,
+                    infoTxt: viewModel.searchMovies[index].title,
                   ),
                 ),
               ],

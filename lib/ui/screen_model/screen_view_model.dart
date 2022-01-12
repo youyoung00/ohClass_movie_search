@@ -10,9 +10,11 @@ class ScreenViewModel with ChangeNotifier {
   final MovieApi _api;
   Timer? _debounce;
 
+  List<MovieInfo> get searchMovies => _searchMovies;
+
   ScreenViewModel(this._api);
 
-  Future<void> _showResult() async {
+  Future<void> showResult() async {
     List<MovieInfo> movies = await _api.fetchPhotos();
 
     _originMovies = movies;
