@@ -23,13 +23,15 @@ class ScreenViewModel with ChangeNotifier {
   }
 
   void onQueryChanged(String query) {
+    String changeQuery = query.toLowerCase();
     if (_debounce?.isActive ?? false) {
       _debounce?.cancel();
     }
 
     _debounce = Timer(const Duration(milliseconds: 500), () {
       _searchMovies = _originMovies
-          .where((movieInfo) => movieInfo.title.contains(query))
+          .where((movieInfo) =>
+              movieInfo.title.toLowerCase().contains(changeQuery))
           .toList();
       notifyListeners();
     });
