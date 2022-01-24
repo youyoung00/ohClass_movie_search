@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:movie_search/components/widgets/text_info_container_widget.dart';
-import 'package:movie_search/ui/screen/movie_detail_screen.dart';
-import 'package:movie_search/ui/screen_model/screen_view_model.dart';
+import 'package:movie_search/model/movies_all_data.dart';
+import 'package:movie_search/ui/screen/screen_view/movie_detail_screen.dart';
+import 'package:movie_search/ui/screen/screen_widget/text_info_container_widget.dart';
+import 'package:movie_search/ui/screen_model/view_model/screen_view_model.dart';
 import 'package:provider/provider.dart';
 
 class MovieScreen extends StatefulWidget {
@@ -28,6 +29,7 @@ class _MovieScreenState extends State<MovieScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final viewModel = context.watch<ScreenViewModel>();
     return Scaffold(
       backgroundColor: Colors.blueGrey,
       appBar: AppBar(
@@ -36,17 +38,18 @@ class _MovieScreenState extends State<MovieScreen> {
       ),
       body: Column(
         children: [
-          _buildTextField(),
-          _buildMovesInfo(),
+          _buildTextField(onChanged: (value) {
+            viewModel.onQueryChanged(value);
+          }),
+          _buildMovesInfo(movieInfo: viewModel.searchMovies),
         ],
       ),
     );
   }
 
-  Widget _buildTextField() {
-    final viewModel = context.watch<ScreenViewModel>();
+  Widget _buildTextField({Function(String)? onChanged}) {
     return TextFormField(
-      onChanged: viewModel.onQueryChanged,
+      onChanged: onChanged, //viewModel.onQueryChanged,
       controller: _textEditingController,
       decoration: InputDecoration(
         suffixIcon: IconButton(
@@ -57,11 +60,10 @@ class _MovieScreenState extends State<MovieScreen> {
     );
   }
 
-  Widget _buildMovesInfo() {
-    final viewModel = context.watch<ScreenViewModel>();
+  Widget _buildMovesInfo({required List<MovieInfo> movieInfo}) {
     return Expanded(
       child: GridView.builder(
-        itemCount: viewModel.searchMovies.length,
+        itemCount: movieInfo.length,
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 3,
           mainAxisExtent: 300,
@@ -78,8 +80,8 @@ class _MovieScreenState extends State<MovieScreen> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => MovieDetailScreen(
-                              movieInfo: viewModel.searchMovies[index]),
+                          builder: (context) =>
+                              MovieDetailScreen(movieInfo: movieInfo[index]),
                         ),
                       );
                     },
@@ -96,7 +98,7 @@ class _MovieScreenState extends State<MovieScreen> {
                         image: DecorationImage(
                           fit: BoxFit.cover,
                           image: NetworkImage(
-                            viewModel.searchMovies[index].posterUrl,
+                            movieInfo[index].posterUrl,
                           ),
                         ),
                       ),
@@ -107,7 +109,7 @@ class _MovieScreenState extends State<MovieScreen> {
                   flex: 3,
                   child: TextInfoContainer(
                     padding: const EdgeInsets.all(8),
-                    infoTxt: viewModel.searchMovies[index].title,
+                    infoTxt: movieInfo[index].title,
                   ),
                 ),
               ],

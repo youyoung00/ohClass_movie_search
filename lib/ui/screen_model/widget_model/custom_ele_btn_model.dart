@@ -1,19 +1,5 @@
 import 'package:flutter/material.dart';
 
-// Map<String, dynamic> eleBtnModel = {
-//   'btn1': {
-//     'btnIcon': Icons.check,
-//     'onClick': () {},
-//     'btnPadding': const EdgeInsets.only(top: 8.0),
-//   },
-//   'btn2': {
-//     'btnIcon': Icons.check,
-//     'onClick': () {},
-//     'btnPadding': const EdgeInsets.only(top: 8.0),
-//   }
-// };
-
-// 버튼 속성 : IconData, btnTxt, EdgeInsets
 class CustomEleBtnModel {
   final IconData btnIcon;
   final EdgeInsets btnPadding;

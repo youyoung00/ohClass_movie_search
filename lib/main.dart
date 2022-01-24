@@ -1,8 +1,8 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:movie_search/ui/screen/movie_screen.dart';
-import 'package:movie_search/ui/screen_model/screen_view_model.dart';
+import 'package:movie_search/ui/screen/screen_view/movie_screen.dart';
+import 'package:movie_search/ui/screen_model/view_model/screen_view_model.dart';
 import 'package:provider/provider.dart';
 
 import 'data/movie_api_data.dart';

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:movie_search/components/configs/custom_ele_btn_model.dart';
-import 'package:movie_search/components/widgets/custom_ele_btn_widget.dart';
-import 'package:movie_search/components/widgets/text_info_container_widget.dart';
 import 'package:movie_search/model/movies_all_data.dart';
+import 'package:movie_search/ui/screen/screen_widget/custom_ele_btn_widget.dart';
+import 'package:movie_search/ui/screen/screen_widget/text_info_container_widget.dart';
+import 'package:movie_search/ui/screen_model/widget_model/custom_ele_btn_model.dart';
 
 class MovieDetailScreen extends StatelessWidget {
   final MovieInfo movieInfo;

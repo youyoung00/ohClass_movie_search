@@ -27,7 +27,7 @@ class ScreenViewModel with ChangeNotifier {
       _debounce?.cancel();
     }
 
-    _debounce = Timer(const Duration(milliseconds: 1000), () {
+    _debounce = Timer(const Duration(milliseconds: 500), () {
       _searchMovies = _originMovies
           .where((movieInfo) => movieInfo.title.contains(query))
           .toList();
