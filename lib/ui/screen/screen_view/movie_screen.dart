@@ -49,6 +49,7 @@ class _MovieScreenState extends State<MovieScreen> {
 
   Widget _buildTextField({Function(String)? onChanged}) {
     return TextFormField(
+      style: const TextStyle(color: Colors.white),
       onChanged: onChanged, //viewModel.onQueryChanged,
       controller: _textEditingController,
       decoration: InputDecoration(

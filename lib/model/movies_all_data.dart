@@ -91,22 +91,40 @@ class MovieInfo {
     return jsonList.map((e) => MovieInfo.fromJson(e)).toList();
   }
 
-  MovieInfo.fromJson(Map<String, dynamic> json) {
-    adult = json['adult'];
-    backdropPath = json['backdrop_path'];
-    genreIds = List.castFrom<dynamic, int>(json['genre_ids']);
-    id = json['id'];
-    originalLanguage = json['original_language'];
-    originalTitle = json['original_title'];
-    overview = json['overview'];
-    popularity = json['popularity'] / 1;
-    posterPath = json['poster_path'];
-    releaseDate = json['release_date'];
-    title = json['title'];
-    video = json['video'];
-    voteAverage = json['vote_average'] / 1;
-    voteCount = json['vote_count'];
+  factory MovieInfo.fromJson(Map<String, dynamic> json) {
+    return MovieInfo(
+        adult: json['adult'],
+        backdropPath: json['backdrop_path'],
+        genreIds: List.castFrom<dynamic, int>(json['genre_ids']),
+        id: json['id'],
+        originalLanguage: json['original_language'],
+        originalTitle: json['original_title'],
+        overview: json['overview'],
+        popularity: json['popularity'] / 1,
+        posterPath: json['poster_path'],
+        releaseDate: json['release_date'],
+        title: json['title'] ?? '타이틀이 없습니다.',
+        video: json['video'],
+        voteAverage: json['vote_average'] / 1,
+        voteCount: json['vote_count']);
   }
+
+  // MovieInfo.fromJson(Map<String, dynamic> json) {
+  //   adult = json['adult'];
+  //   backdropPath = json['backdrop_path'];
+  //   genreIds = List.castFrom<dynamic, int>(json['genre_ids']);
+  //   id = json['id'];
+  //   originalLanguage = json['original_language'];
+  //   originalTitle = json['original_title'];
+  //   overview = json['overview'];
+  //   popularity = json['popularity'] / 1;
+  //   posterPath = json['poster_path'];
+  //   releaseDate = json['release_date'];
+  //   title = json['title'];
+  //   video = json['video'];
+  //   voteAverage = json['vote_average'] / 1;
+  //   voteCount = json['vote_count'];
+  // }
 
   Map<String, dynamic> toJson() {
     final _data = <String, dynamic>{};

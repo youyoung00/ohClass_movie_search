@@ -20,7 +20,7 @@ class TextInfoContainer extends StatelessWidget {
         alignment: Alignment.topLeft,
         child: Text(
           infoTxt,
-          style: TextStyle(color: txtColor ?? Colors.black),
+          style: TextStyle(color: txtColor ?? Colors.white),
         ),
       ),
     );
